@@ -1,11 +1,11 @@
 {
-  "name": "remotion-cinematic-intro",
+  "name": "system-update-animation",
   "version": "1.0.0",
-  "description": "Cinematic Tech Intro with Remotion",
+  "description": "SYSTEM UPDATE - 30 Second Animated Short",
   "scripts": {
     "start": "remotion studio",
-    "build": "remotion render src/index.ts CinematicIntro Outputs/intro.mp4",
-    "render": "remotion render src/index.ts CinematicIntro Outputs/intro.mp4"
+    "build": "remotion render src/index.ts SystemUpdate Outputs/system-update.mp4",
+    "render": "remotion render src/index.ts SystemUpdate Outputs/system-update.mp4"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.434",

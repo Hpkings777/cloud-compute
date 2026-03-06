@@ -1,0 +1,42 @@
+name: Render Cinematic Intro
+
+on:
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Render video
+        run: npx remotion render CinematicIntro Outputs/intro.mp4
+
+      - name: Upload video artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: intro-video
+          path: Outputs/intro.mp4
+
+      - name: Download video to repo
+        uses: actions/download-artifact@v4
+        with:
+          name: intro-video
+          path: .
+
+      - name: Commit video
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add intro.mp4
+          git commit -m "Add rendered intro video" || echo "No changes to commit"
+          git push

@@ -1,12 +1,12 @@
 import { Composition } from "remotion";
-import { SystemUpdate } from "./SystemUpdate";
+import { DefaultExe } from "./compositions/DefaultExe";
 
 export const RemotionRoot = () => {
   return (
     <Composition
-      id="SystemUpdate"
-      component={SystemUpdate}
-      durationInFrames={900}
+      id="DefaultExe"
+      component={DefaultExe}
+      durationInFrames={5400}
       fps={30}
       width={1080}
       height={1920}

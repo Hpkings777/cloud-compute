@@ -1,4 +1,4 @@
-name: Render System Update
+name: Render Default.EXE
 
 on:
   workflow_dispatch:
@@ -19,24 +19,24 @@ jobs:
         run: npm install
 
       - name: Render video
-        run: npx remotion render src/index.ts SystemUpdate Outputs/system-update.mp4
+        run: npx remotion render src/index.ts DefaultExe Outputs/default-exe.mp4
 
       - name: Upload video artifact
         uses: actions/upload-artifact@v4
         with:
-          name: system-update-video
-          path: Outputs/system-update.mp4
+          name: default-exe-video
+          path: Outputs/default-exe.mp4
 
       - name: Download video to repo
         uses: actions/download-artifact@v4
         with:
-          name: system-update-video
+          name: default-exe-video
           path: .
 
       - name: Commit video
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add system-update.mp4
-          git commit -m "Add rendered system-update video" || echo "No changes to commit"
+          git add default-exe.mp4
+          git commit -m "Add rendered default-exe video" || echo "No changes to commit"
           git push

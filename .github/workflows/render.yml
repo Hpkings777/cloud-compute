@@ -1,7 +1,16 @@
-name: Render Default.EXE
+name: Render Ohm's Law Animation
 
 on:
   workflow_dispatch:
+    inputs:
+      composition:
+        description: 'Composition ID'
+        required: false
+        default: 'OhmsLaw'
+        type: choice
+        options:
+          - 'OhmsLaw'
+          - 'DefaultExe'
 
 jobs:
   render:
@@ -19,24 +28,29 @@ jobs:
         run: npm install
 
       - name: Render video
-        run: npx remotion render src/index.ts DefaultExe Outputs/default-exe.mp4
+        run: |
+          COMP_ID="${{ github.event.inputs.composition }}"
+          if [ -z "$COMP_ID" ]; then
+            COMP_ID="OhmsLaw"
+          fi
+          npx remotion render src/index.ts "$COMP_ID" Outputs/output.mp4
 
       - name: Upload video artifact
         uses: actions/upload-artifact@v4
         with:
-          name: default-exe-video
-          path: Outputs/default-exe.mp4
+          name: ohms-law-video
+          path: Outputs/output.mp4
 
       - name: Download video to repo
         uses: actions/download-artifact@v4
         with:
-          name: default-exe-video
+          name: ohms-law-video
           path: .
 
       - name: Commit video
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add default-exe.mp4
-          git commit -m "Add rendered default-exe video" || echo "No changes to commit"
+          git add output.mp4
+          git commit -m "Add rendered Ohm's Law animation" || echo "No changes to commit"
           git push

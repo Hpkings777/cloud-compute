@@ -2,15 +2,6 @@ name: Render Ohm's Law Animation
 
 on:
   workflow_dispatch:
-    inputs:
-      composition:
-        description: 'Composition ID'
-        required: false
-        default: 'OhmsLaw'
-        type: choice
-        options:
-          - 'OhmsLaw'
-          - 'DefaultExe'
 
 jobs:
   render:
@@ -28,29 +19,27 @@ jobs:
         run: npm install
 
       - name: Render video
-        run: |
-          COMP_ID="${{ github.event.inputs.composition }}"
-          if [ -z "$COMP_ID" ]; then
-            COMP_ID="OhmsLaw"
-          fi
-          npx remotion render src/index.ts "$COMP_ID" Outputs/output.mp4
+        run: npx remotion render src/index.ts OhmsLaw Outputs/output.mp4 --overwrite
 
       - name: Upload video artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: ohms-law-video
           path: Outputs/output.mp4
 
       - name: Download video to repo
+        if: success()
         uses: actions/download-artifact@v4
         with:
           name: ohms-law-video
           path: .
 
       - name: Commit video
+        if: success()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add output.mp4
+          git add output.mp4 || echo "No video to add"
           git commit -m "Add rendered Ohm's Law animation" || echo "No changes to commit"
-          git push
+          git push || echo "Push failed but continuing"

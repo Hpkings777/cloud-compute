@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { AbsoluteFill, spring, useCurrentFrame } from 'remotion';
-import { theme } from './theme';
+import { theme } from '../utils/theme';
 
 interface CaptionProps {
   text: string;
